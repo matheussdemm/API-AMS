@@ -9,5 +9,9 @@ switch($metodoSolicitado){
     case "POST":
         $dados_recebido = json_decode(file_get_contents("php://input"), true);
         break;
+
+        case "GET":
+            echo "Veio do navegador";
+            break;
 }
 ?>
