@@ -15,7 +15,7 @@
             <th>Nome</th>
             <th>Disponivel</th>
         </thead>
-        <tbody>
+        <tbody id="corpoTabela">
 
         </tbody>
     </table>
@@ -56,6 +56,9 @@ td_Nome.innerText = valor.Nome
     tr.append(td_Id)
     tr.append(td_Nome)
     tr.append(td_Disponivel)
+
+    var tabela = document.getAnimations("corpoTabela");
+    tabela.appendChild(tr)
 })
 })
         }
