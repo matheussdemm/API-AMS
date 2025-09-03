@@ -15,7 +15,7 @@
             <th>Nome</th>
             <th>Disponivel</th>
         </thead>
-        <tbody id="corpoTabela">
+        <tbody id="corpoTabela" >
 
         </tbody>
     </table>
@@ -23,47 +23,68 @@
     <label for="materia">Nome da materia</label>
     <input type="text" name="materia" id="materia" />
     <br />
+    <br />
+    <label for="disponivel" >Disponível para lecionar?</label>
     <select name="Disponivel" id="disponivel">
         <option value="1">Sim</option>
         <option value="0">Não</option>
     </select>
+    <br />
+    <br />
     <button onclick="cadastrar()">Cadastrar</button>
     <script>
         function cadastrar()
         {
-
+            fetch('http://localhost/api-ams/rotas/Materias.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                            body: JSON.stringify({
+                                "Materia" : "",
+                                "Disponivel" : ""
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Resposta da API:", data);
+                        })
+                        .catch(error => {
+                            console.error("Erro ao enviar requisição:", error);
+                        });
         }
         function atualizarTabela()
         {
-var url = "http://localhost/api-ams/rotas/materias.php"
-fetch(url)
-.then(resposta => resposta.json())
-.then(dados =>{
-console.log(dados)
-dados.map((valor, indice)=>{
-    createElement("tr")
-    var td = document.createElement("tr")
+            var url = "http://localhost/api-ams/rotas/materias.php"
+            fetch(url)
+            .then(resposta => resposta.json())
+            .then(dados =>{
+                console.log(dados)
+                dados.map((valor, indice)=>{
+                    var tr = document.createElement("tr")
+                    
+                    var td_Id = document.createElement("td")
+                    td_Id.innerText = valor.Id
 
-    var td_Id = document.createElement("td")
-    td_Id.innerText = valor.Id
+                    var td_Nome = document.createElement("td")
+                    td_Nome.innerText = valor.Materia
 
-    var td_Nome = document.createElement("td")
-td_Nome.innerText = valor.Nome
+                    var td_Disponivel = document.createElement("td")
+                    td_Disponivel.innerText = valor.Disponivel
 
-    var td_Disponivel = document.createElement("td")
-    td_Disponivel.innerText = valor.Disponivel
+                    tr.append(td_Id)
+                    tr.append(td_Nome)
+                    tr.append(td_Disponivel)
 
-    tr.append(td_Id)
-    tr.append(td_Nome)
-    tr.append(td_Disponivel)
+                    var tabela = document.getElementById("corpoTabela")
+                    tabela.appendChild(tr)
 
-    var tabela = document.getAnimations("corpoTabela");
-    tabela.appendChild(tr)
-})
-})
+                })
+
+            })
         }
 
-atualizarTabela()
+        atualizarTabela()
 
     </script>
 </body>
