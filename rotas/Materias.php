@@ -1,20 +1,14 @@
 <?php 
-/* CABEÇALHOS do HTTP */
+
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-/*
-Essa variável recebe o metodo utilizado
-pode ser POST, GET, PUT ou DELETE
-*/
+
 $metodoSolicitado = $_SERVER['REQUEST_METHOD'];
 
-/*Esse Id é quando colocamos informações na URL*/
+
 $id     = $_GET['id'] ?? null;
-/*
- ?? significa que se $_GET['id'] existir e não for nula 
-o conteudo entra na variável id
-*/
+
 switch($metodoSolicitado){
     case "POST":
         $dados_recebidos = json_decode(file_get_contents("php://input"), true);
@@ -39,17 +33,17 @@ switch($metodoSolicitado){
                 $stmt->bind_param("ss", $nome_materia, $disponivel);
 
                 if ($stmt->execute()) {
-                    echo json_encode(["mensagem" => "Matéria inserida com sucesso"]);
+                    //echo json_encode('{"mensagem" : "Matéria inserida com sucesso"}');
                 } else {
                     http_response_code(500);
-                    echo json_encode(["erro" => "Erro ao inserir: " . $stmt->error]);
+                    //echo json_encode('{"erro" : "Erro ao inserir: " . $stmt->error}');
                 }
 
                 $stmt->close();
                 $conexao->close();
-                echo json_encode($dados_recebidos)
+                echo json_encode($dados_recebidos);
             }else{
-                echo json_encode("{'erro':'dados inválidos'}")
+                echo json_encode("{'erro':'dados inválidos'}");
             }
         break;
     case "GET":

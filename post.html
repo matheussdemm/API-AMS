@@ -11,9 +11,11 @@
     <h2>Listagem</h2>
     <table>
         <thead>
+            <tr>
             <th>Id</th>
             <th>Nome</th>
             <th>Disponivel</th>
+            </tr>
         </thead>
         <tbody id="corpoTabela" >
 
@@ -35,23 +37,31 @@
     <script>
         function cadastrar()
         {
-            fetch('http://localhost/api-ams/rotas/Materias.php', {
+            var materia = document.getElementById("materia")
+            var disponivel = document.getElementById('disponivel')
+
+
+            fetch('http://localhost/api-ams/rotas/materias.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                             body: JSON.stringify({
-                                "Materia" : "",
-                                "Disponivel" : ""
+                                "Materia" : materia.value,
+                                "Disponivel" : disponivel.value
                             })
                         })
                         .then(response => response.json())
                         .then(data => {
-                            console.log("Resposta da API:", data);
+                            console.log(data);
+                            atualizarTabela()
+                            materia.value = ""
                         })
                         .catch(error => {
                             console.error("Erro ao enviar requisição:", error);
+                            alert("Error:"+error)
                         });
+                        
         }
         function atualizarTabela()
         {
@@ -60,7 +70,10 @@
             .then(resposta => resposta.json())
             .then(dados =>{
                 console.log(dados)
+                 var tabela = document.getElementById("corpoTabela")
+                  tabela.remove()
                 dados.map((valor, indice)=>{
+
                     var tr = document.createElement("tr")
                     
                     var td_Id = document.createElement("td")
@@ -76,7 +89,8 @@
                     tr.append(td_Nome)
                     tr.append(td_Disponivel)
 
-                    var tabela = document.getElementById("corpoTabela")
+                   
+                  
                     tabela.appendChild(tr)
 
                 })
